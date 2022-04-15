@@ -13,6 +13,7 @@ routeserverrange   = ["10.0.1.128/27"]
 allowedips         = ["<your static ip here>"]
 
 # Palo NVA variables
+bootdiagsname   = "<storage account name>"
 palodeploycount = "2"
 palovmsize      = "Standard_DS2v4"
 palooffer       = "vmseries-flex"
