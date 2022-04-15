@@ -46,6 +46,14 @@ provider "azurerm" {
 resource "azurerm_resource_group" "network" {
   name     = "rg-${var.environment}-${var.environment}-transit"
   location = var.location
+  tags = {
+    environment     = var.environment
+    location        = var.location
+    BusinessUnit    = "IT"
+    OpsTeam         = "Network"
+    ApplicationName = "${var.location} transit hub"
+    Owner           = "john@doe.com"
+  }
 }
 
 # Deploy the transit hub virtual network
@@ -93,6 +101,15 @@ module "ext-lb" {
   hubnetworkid = module.hub-network.hubnetworkid
 }
 
+# Create the boot diagnostics storage account
+resource "azurerm_storage_account" "bootdiags" {
+  name                     = var.bootdiagsname
+  resource_group_name      = azurerm_resource_group.example.name
+  location                 = azurerm_resource_group.example.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
 # Deploy one or more Palo Alto NVAs
 module "palo-nva" {
   source            = "./modules/palo-nva"
@@ -114,6 +131,7 @@ module "palo-nva" {
   trustsubid        = module.hub-network.trustsubid
   intbackendpoolid  = module.obew-lb.backendpoolid
   extbackendpoolid  = module.ext-lb.backendpoolid
+  bootdiagsname     = azurerm_storage_account.bootdiags.primary_blob_endpoint
 }
 
 # Create and associate route tables for the transit hub subnets

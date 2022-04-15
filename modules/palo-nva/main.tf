@@ -67,6 +67,11 @@ resource "azurerm_virtual_machine" "palo-nva" {
   delete_os_disk_on_termination    = true
   delete_data_disks_on_termination = true
 
+  boot_diagnostics = {
+    enabled     = true
+    storage_uri = var.bootdiagsname
+  }
+
   plan {
     name      = var.palosku
     publisher = "paloaltonetworks"

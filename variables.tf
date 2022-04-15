@@ -53,6 +53,11 @@ variable "allowedips" {
 }
 
 # Palo Alto NVA variables
+variable "bootdiagsname" {
+  description = "Name of the storage account to store boot diagnostics"
+  type        = string
+}
+
 variable "palodeploycount" {
   description = "Number of Palo Alto VM-series appliances to deploy (max 27)"
   type        = string

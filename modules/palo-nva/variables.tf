@@ -65,3 +65,8 @@ variable "intbackendpoolid" {
 variable "extbackendpoolid" {
   type = string
 }
+
+variable "bootdiagsname" {
+  description = "Name of the storage account to store boot diagnostics"
+  type        = string
+}
