@@ -1,5 +1,5 @@
 
-# Create External LoadBalancer (LB)
+# Create External Load Balancer (LB)
 resource "azurerm_lb" "extlb" {
   name                = "elb-${var.environment}-${var.location}-transit"
   location            = var.location
@@ -13,7 +13,7 @@ resource "azurerm_lb" "extlb" {
   }
 }
 
-# Create External LoadBalancer Probe
+# Create External Load Balancer Probe
 resource "azurerm_lb_probe" "extlb" {
   #resource_group_name = azurerm_resource_group.rg-networking-prod.name
   loadbalancer_id = azurerm_lb.extlb.id

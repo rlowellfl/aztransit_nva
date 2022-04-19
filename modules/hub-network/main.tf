@@ -1,4 +1,4 @@
-# Create NSGs
+# Create Palo Alto Mgmt subnet Network Security Group
 resource "azurerm_network_security_group" "palomgmt" {
   name                = "nsg-${var.environment}-${var.location}-transit-palomgmt"
   location            = var.location
@@ -29,6 +29,7 @@ resource "azurerm_network_security_group" "palomgmt" {
   }
 }
 
+# Create the Palo Alto Trust and Untrust subnet Network Security Group
 resource "azurerm_network_security_group" "default" {
   name                = "nsg-${var.environment}-${var.location}-transit-default"
   location            = var.location
@@ -44,7 +45,7 @@ resource "azurerm_virtual_network" "transithub" {
   dns_servers         = var.hubdnsservers
 }
 
-# Create transit hub subnets and  associate network security groups
+# Create transit hub subnets and associate network security groups
 resource "azurerm_subnet" "palomgmt" {
   name                 = "palomgmt"
   resource_group_name  = var.rgname

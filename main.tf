@@ -14,7 +14,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "=3.0.1"
+      version = "~>3.1.0"
     }
   }
   /*  backend "azurerm" {
@@ -110,7 +110,7 @@ resource "azurerm_storage_account" "bootdiags" {
   account_replication_type = "LRS"
 }
 
-# Deploy one or more Palo Alto NVAs
+# Deploy one or more Palo Alto VM-Series NVAs
 module "palo-nva" {
   source            = "./modules/palo-nva"
   rgname            = azurerm_resource_group.network.name
