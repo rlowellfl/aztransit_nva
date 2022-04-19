@@ -101,6 +101,5 @@ variable "spoke_network" {
     spokeVnetRange = list(string)
     spokeSubName   = string
     spokeSubRange  = list(string)
-    vmName         = string
   }))
 }

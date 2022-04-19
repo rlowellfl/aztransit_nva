@@ -104,8 +104,8 @@ module "ext-lb" {
 # Create the boot diagnostics storage account
 resource "azurerm_storage_account" "bootdiags" {
   name                     = var.bootdiagsname
-  resource_group_name      = azurerm_resource_group.example.name
-  location                 = azurerm_resource_group.example.location
+  resource_group_name      = azurerm_resource_group.network.name
+  location                 = azurerm_resource_group.network.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
 }
