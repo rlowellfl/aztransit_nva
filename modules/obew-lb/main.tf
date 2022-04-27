@@ -11,6 +11,12 @@ resource "azurerm_lb" "obewilb" {
     subnet_id                     = var.trustsubid
     private_ip_address_allocation = "Dynamic"
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create Internal LoadBalancer Probe

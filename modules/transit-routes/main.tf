@@ -17,6 +17,11 @@ resource "azurerm_route_table" "mgmt" {
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.intlbip
   }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 #Route table for public subnet
 resource "azurerm_route_table" "untrust" {
@@ -34,6 +39,11 @@ resource "azurerm_route_table" "untrust" {
     name           = "udr-trust-blackhole"
     address_prefix = var.trustsubiprange
     next_hop_type  = "None"
+  }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
 #Route table for private subnet
@@ -53,6 +63,11 @@ resource "azurerm_route_table" "trust" {
     address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.intlbip
+  }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
 

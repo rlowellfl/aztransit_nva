@@ -27,6 +27,12 @@ resource "azurerm_network_security_group" "palomgmt" {
     source_address_prefixes    = var.allowedips
     destination_address_prefix = "*"
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create the Palo Alto Trust and Untrust subnet Network Security Group
@@ -34,6 +40,11 @@ resource "azurerm_network_security_group" "default" {
   name                = "nsg-${var.environment}-${var.location}-transit-default"
   location            = var.location
   resource_group_name = var.rgname
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create the transit hub virtual network
@@ -43,6 +54,11 @@ resource "azurerm_virtual_network" "transithub" {
   resource_group_name = var.rgname
   address_space       = var.hubvnetspace
   dns_servers         = var.hubdnsservers
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create transit hub subnets and associate network security groups

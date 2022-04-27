@@ -4,6 +4,11 @@ resource "azurerm_virtual_network" "spoke" {
   address_space       = var.spokeVnetRange
   location            = var.location
   resource_group_name = var.rgname
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create a subnet within the spoke virtual network
@@ -42,6 +47,11 @@ resource "azurerm_route_table" "routeTable" {
   location                      = var.location
   resource_group_name           = var.rgname
   disable_bgp_route_propagation = true
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 #Create a route for all traffic to point to the internal LB in the Hub Vnet

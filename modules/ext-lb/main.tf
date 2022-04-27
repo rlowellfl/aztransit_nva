@@ -11,6 +11,12 @@ resource "azurerm_lb" "extlb" {
     subnet_id                     = var.untrustsubid
     private_ip_address_allocation = "Dynamic"
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create External Load Balancer Probe

@@ -10,6 +10,12 @@ variable "location" {
   type        = string
 }
 
+# Tag variables
+variable "required_tags" {
+  description = "List of required tags to be applied to the resource group. Tags will be inherited by child resources automatically based on Azure policy."
+  type = map
+}
+
 # Hub network variables
 
 variable "hubvnetspace" {

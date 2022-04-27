@@ -5,7 +5,7 @@ BEFORE DEPLOYING FWs
 Using the AzCLI, accept the offer terms prior to deployment. This only
 need to be done once per subscription
 ```
-az vm image terms accept --urn paloaltonetworks:vmseries1:byol:latest
+az vm image terms accept --urn paloaltonetworks:vmseries-flex:byol:latest
 ```
 */
 
@@ -26,6 +26,7 @@ terraform {
 */
 }
 
+/*
 # Pull data from the Panorama deployment tfstate file
 data "terraform_remote_state" "panorama" {
   backend = "azurerm"
@@ -36,6 +37,7 @@ data "terraform_remote_state" "panorama" {
     key                  = "<storage account key>"
   }
 }
+*/
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
@@ -46,14 +48,7 @@ provider "azurerm" {
 resource "azurerm_resource_group" "network" {
   name     = "rg-${var.environment}-${var.environment}-transit"
   location = var.location
-  tags = {
-    environment     = var.environment
-    location        = var.location
-    BusinessUnit    = "IT"
-    OpsTeam         = "Network"
-    ApplicationName = "${var.location} transit hub"
-    Owner           = "john@doe.com"
-  }
+  tags = var.required_tags
 }
 
 # Deploy the transit hub virtual network
@@ -79,6 +74,11 @@ resource "azurerm_availability_set" "palonva" {
   resource_group_name         = azurerm_resource_group.network.name
   platform_fault_domain_count = "2"
   managed                     = true
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create the internal OBEW load balancer
@@ -108,6 +108,11 @@ resource "azurerm_storage_account" "bootdiags" {
   location                 = azurerm_resource_group.network.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Deploy one or more Palo Alto VM-Series NVAs

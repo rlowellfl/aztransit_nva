@@ -5,6 +5,11 @@ resource "azurerm_public_ip" "mgmtpip" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_public_ip" "untrustpip" {
@@ -13,6 +18,11 @@ resource "azurerm_public_ip" "untrustpip" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 # Create VNICs
@@ -26,6 +36,11 @@ resource "azurerm_network_interface" "vnic0" {
     subnet_id                     = var.mgmtsubid
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.mgmtpip.id
+  }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
 
@@ -41,6 +56,11 @@ resource "azurerm_network_interface" "vnic1" {
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.untrustpip.id
   }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 }
 
 resource "azurerm_network_interface" "vnic2" {
@@ -53,6 +73,11 @@ resource "azurerm_network_interface" "vnic2" {
     name                          = "fw${var.countindex}-trust"
     subnet_id                     = var.trustsubid
     private_ip_address_allocation = "Dynamic"
+  }
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
 
@@ -107,6 +132,12 @@ resource "azurerm_virtual_machine" "palo-nva" {
 
   os_profile_linux_config {
     disable_password_authentication = false
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
   }
 }
 
