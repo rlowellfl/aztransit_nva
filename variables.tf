@@ -53,6 +53,11 @@ variable "routeserverrange" {
   type        = list(string)
 }
 
+variable "bastionrange" {
+  description = "Transit hub Azure Bastion subnet IP range"
+  type        = list(string)
+}
+
 variable "allowedips" {
   description = "List of allowed source IPs to the Palo Alto management public IPs"
   type        = list(string)

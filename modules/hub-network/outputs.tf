@@ -33,3 +33,7 @@ output "untrustsubiprange" {
 output "trustsubiprange" {
   value = join("", azurerm_subnet.trust.address_prefixes)
 }
+
+output "trustsubiprange" {
+  value = join("", azurerm_subnet.bastion.address_prefixes)
+}

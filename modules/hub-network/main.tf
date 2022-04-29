@@ -111,3 +111,10 @@ resource "azurerm_subnet" "routeserver" {
   virtual_network_name = azurerm_virtual_network.transithub.name
   address_prefixes     = var.routeserverrange
 }
+
+resource "azurerm_subnet" "bastion" {
+  name                 = "AzureBastionSubnet"
+  resource_group_name  = var.rgname
+  virtual_network_name = azurerm_virtual_network.transithub.name
+  address_prefixes     = var.bastionrange
+}

@@ -64,6 +64,7 @@ module "hub-network" {
   hubmgmtsubrange    = var.hubmgmtsubrange
   hubgatewayrange    = var.hubgatewayrange
   routeserverrange   = var.routeserverrange
+  bastionrange       = var.bastionrange
   allowedips         = var.allowedips
 }
 

@@ -38,6 +38,10 @@ variable "routeserverrange" {
   type = list(string)
 }
 
+variable "bastionrange" {
+  type = list(string)
+}
+
 variable "allowedips" {
   type = list(string)
 }

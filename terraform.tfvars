@@ -22,13 +22,14 @@ required_tags = {
 }
 
 # Hub VNet variables
-hubvnetspace       = ["10.0.1.0/24"]
+hubvnetspace       = ["10.0.0.0/23"]
 hubdnsservers      = ["8.8.8.8", "8.8.4.4"]
-hubmgmtsubrange    = ["10.0.1.0/27"]
-hubuntrustsubrange = ["10.0.1.32/27"]
-hubtrustsubrange   = ["10.0.1.64/27"]
-hubgatewayrange    = ["10.0.1.96/27"]
-routeserverrange   = ["10.0.1.128/27"]
+hubmgmtsubrange    = ["10.0.0.0/27"]
+hubuntrustsubrange = ["10.0.0.32/27"]
+hubtrustsubrange   = ["10.0.0.64/27"]
+hubgatewayrange    = ["10.0.0.96/27"]
+routeserverrange   = ["10.0.0.128/27"]
+bastionrange       = ["10.0.1.0/26"]
 allowedips         = ["11.22.33.44"]
 
 # Palo NVA variables
