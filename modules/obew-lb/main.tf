@@ -30,7 +30,7 @@ resource "azurerm_lb_probe" "obewilb" {
 # Create backend Pool for PA Internal LB
 resource "azurerm_lb_backend_address_pool" "obewilb" {
   loadbalancer_id = azurerm_lb.obewilb.id
-  name            = "To_PA_Trust"
+  name            = "To_NVA_Trust"
 }
 
 # Create internal PA LB Rule

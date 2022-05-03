@@ -48,29 +48,21 @@ provider "azurerm" {
 resource "azurerm_resource_group" "network" {
   name     = "rg-${var.environment}-${var.environment}-transit"
   location = var.location
-  tags = var.required_tags
+  tags     = var.required_tags
 }
 
 # Deploy the transit hub virtual network
 module "hub-network" {
-  source             = "./modules/hub-network"
-  rgname             = azurerm_resource_group.network.name
-  location           = azurerm_resource_group.network.location
-  environment        = var.environment
-  hubvnetspace       = var.hubvnetspace
-  hubdnsservers      = var.hubdnsservers
-  hubtrustsubrange   = var.hubtrustsubrange
-  hubuntrustsubrange = var.hubuntrustsubrange
-  hubmgmtsubrange    = var.hubmgmtsubrange
-  hubgatewayrange    = var.hubgatewayrange
-  routeserverrange   = var.routeserverrange
-  bastionrange       = var.bastionrange
-  allowedips         = var.allowedips
+  source      = "./modules/hub-network"
+  rgname      = azurerm_resource_group.network.name
+  location    = azurerm_resource_group.network.location
+  environment = var.environment
+  hubvnet     = var.hubvnet
 }
 
-#Create an Availavility Set for the Palo Alto NVAs
-resource "azurerm_availability_set" "palonva" {
-  name                        = "as-${var.environment}-${var.location}-transit-palo"
+#Create an Availavility Set for the NVAs
+resource "azurerm_availability_set" "nva" {
+  name                        = "as-${var.environment}-${var.location}-transit-nva"
   location                    = azurerm_resource_group.network.location
   resource_group_name         = azurerm_resource_group.network.name
   platform_fault_domain_count = "2"
@@ -116,21 +108,16 @@ resource "azurerm_storage_account" "bootdiags" {
   }
 }
 
-# Deploy one or more Palo Alto VM-Series NVAs
-module "palo-nva" {
-  source            = "./modules/palo-nva"
+# Deploy one or more Network Virtual Appliances
+module "nva" {
+  source            = "./modules/nva"
   rgname            = azurerm_resource_group.network.name
   location          = azurerm_resource_group.network.location
   environment       = var.environment
-  availabilitysetid = azurerm_availability_set.palonva.id
-  count             = var.palodeploycount
+  availabilitysetid = azurerm_availability_set.nva.id
+  count             = var.nvavalues["deploycount"]
   countindex        = count.index
-  palovmsize        = var.palovmsize
-  palooffer         = var.palooffer
-  palosku           = var.palosku
-  paloversion       = var.paloversion
-  palonvauser       = var.palonvauser
-  palonvapass       = var.palonvapass
+  nvavalues         = var.nvavalues
   hubnetworkid      = module.hub-network.hubnetworkid
   mgmtsubid         = module.hub-network.mgmtsubid
   untrustsubid      = module.hub-network.untrustsubid

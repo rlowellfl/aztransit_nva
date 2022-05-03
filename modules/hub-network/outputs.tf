@@ -11,7 +11,7 @@ output "hubnetworkid" {
 }
 
 output "mgmtsubid" {
-  value = azurerm_subnet.palomgmt.id
+  value = azurerm_subnet.mgmt.id
 }
 
 output "untrustsubid" {
@@ -23,7 +23,7 @@ output "trustsubid" {
 }
 
 output "mgmtsubiprange" {
-  value = join("", azurerm_subnet.palomgmt.address_prefixes)
+  value = join("", azurerm_subnet.mgmt.address_prefixes)
 }
 
 output "untrustsubiprange" {
@@ -34,6 +34,6 @@ output "trustsubiprange" {
   value = join("", azurerm_subnet.trust.address_prefixes)
 }
 
-output "trustsubiprange" {
+output "bastionsubiprange" {
   value = join("", azurerm_subnet.bastion.address_prefixes)
 }

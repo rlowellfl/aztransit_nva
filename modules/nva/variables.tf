@@ -18,28 +18,8 @@ variable "countindex" {
   type = string
 }
 
-variable "palovmsize" {
-  type = string
-}
-
-variable "palooffer" {
-  type = string
-}
-
-variable "palosku" {
-  type = string
-}
-
-variable "paloversion" {
-  type = string
-}
-
-variable "palonvauser" {
-  type = string
-}
-
-variable "palonvapass" {
-  type = string
+variable "nvavalues" {
+  type        = map
 }
 
 variable "mgmtsubid" {

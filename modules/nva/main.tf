@@ -1,3 +1,11 @@
+/*
+
+This network virtual appliance deployment module is structured for Palo Alto VM Series firewalls, with 3 NICs
+associated (untrust, trust, mgmt). Other NVA images may be substituted in the tfvars file but may require
+structural changes to the deployment below based on the image and resource requirements.
+
+*/
+
 # Create Public IPs
 resource "azurerm_public_ip" "mgmtpip" {
   name                = "pip-${var.environment}-${var.location}-transit-mgmt-${var.environment}-${var.countindex}"
@@ -81,12 +89,12 @@ resource "azurerm_network_interface" "vnic2" {
   }
 }
 
-# Create Palo Alto NVA
-resource "azurerm_virtual_machine" "palo-nva" {
+# Create NVA
+resource "azurerm_virtual_machine" "nva" {
   name                = "nva-${var.environment}-${var.location}-transit-obew-${var.countindex}"
   location            = var.location
   resource_group_name = var.rgname
-  vm_size             = var.palovmsize
+  vm_size             = var.nvavalues["vmsize"]
   availability_set_id = var.availabilitysetid
 
   delete_os_disk_on_termination    = true
@@ -98,16 +106,16 @@ resource "azurerm_virtual_machine" "palo-nva" {
   }
 
   plan {
-    name      = var.palosku
-    publisher = "paloaltonetworks"
-    product   = var.palooffer
+    name      = var.nvavalues["sku"]
+    publisher = var.nvavalues["publisher"]
+    product   = var.nvavalues["offer"]
   }
 
   storage_image_reference {
-    publisher = "paloaltonetworks"
-    offer     = var.palooffer
-    sku       = var.palosku
-    version   = var.paloversion
+    publisher = var.nvavalues["publisher"]
+    offer     = var.nvavalues["offer"]
+    sku       = var.nvavalues["sku"]
+    version   = var.nvavalues["version"]
   }
 
   storage_os_disk {
@@ -120,8 +128,8 @@ resource "azurerm_virtual_machine" "palo-nva" {
 
   os_profile {
     computer_name  = "nva-${var.environment}-${var.location}-transit-obew-${var.countindex}"
-    admin_username = var.palonvauser
-    admin_password = var.palonvapass
+    admin_username = var.nvavalues["nvauser"]
+    admin_password = var.nvavalues["nvapass"]
   }
 
   primary_network_interface_id = azurerm_network_interface.vnic0.id
@@ -143,7 +151,7 @@ resource "azurerm_virtual_machine" "palo-nva" {
 
 # Add the NVA's trusted NIC IP to the internal OBEW load balancer back end pool
 resource "azurerm_lb_backend_address_pool_address" "obewilb" {
-  name                    = "${azurerm_virtual_machine.palo-nva.name}-trust"
+  name                    = "${azurerm_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.intbackendpoolid
   virtual_network_id      = var.hubnetworkid
   ip_address              = azurerm_network_interface.vnic2.private_ip_address
@@ -151,7 +159,7 @@ resource "azurerm_lb_backend_address_pool_address" "obewilb" {
 
 # Add the NVA's untrusted NIC IP to the external load balancer back end pool
 resource "azurerm_lb_backend_address_pool_address" "extlb" {
-  name                    = "${azurerm_virtual_machine.palo-nva.name}-trust"
+  name                    = "${azurerm_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.extbackendpoolid
   virtual_network_id      = var.hubnetworkid
   ip_address              = azurerm_network_interface.vnic1.private_ip_address

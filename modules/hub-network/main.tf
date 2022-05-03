@@ -1,6 +1,6 @@
-# Create Palo Alto Mgmt subnet Network Security Group
-resource "azurerm_network_security_group" "palomgmt" {
-  name                = "nsg-${var.environment}-${var.location}-transit-palomgmt"
+# Create NVA Mgmt subnet Network Security Group
+resource "azurerm_network_security_group" "mgmt" {
+  name                = "nsg-${var.environment}-${var.location}-transit-mgmt"
   location            = var.location
   resource_group_name = var.rgname
 
@@ -12,7 +12,7 @@ resource "azurerm_network_security_group" "palomgmt" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "443"
-    source_address_prefixes    = var.allowedips
+    source_address_prefixes    = var.hubvnet["allowedips"]
     destination_address_prefix = "*"
   }
 
@@ -24,7 +24,7 @@ resource "azurerm_network_security_group" "palomgmt" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
-    source_address_prefixes    = var.allowedips
+    source_address_prefixes    = var.hubvnet["allowedips"]
     destination_address_prefix = "*"
   }
 
@@ -35,7 +35,7 @@ resource "azurerm_network_security_group" "palomgmt" {
   }
 }
 
-# Create the Palo Alto Trust and Untrust subnet Network Security Group
+# Create the NVA Trust and Untrust subnet Network Security Group
 resource "azurerm_network_security_group" "default" {
   name                = "nsg-${var.environment}-${var.location}-transit-default"
   location            = var.location
@@ -52,8 +52,8 @@ resource "azurerm_virtual_network" "transithub" {
   name                = "vnet-${var.environment}-${var.location}-transit"
   location            = var.location
   resource_group_name = var.rgname
-  address_space       = var.hubvnetspace
-  dns_servers         = var.hubdnsservers
+  address_space       = var.hubvnet["addrspace"]
+  dns_servers         = var.hubvnet["dnsservers"]
   lifecycle {
     ignore_changes = [
       tags,
@@ -62,23 +62,23 @@ resource "azurerm_virtual_network" "transithub" {
 }
 
 # Create transit hub subnets and associate network security groups
-resource "azurerm_subnet" "palomgmt" {
-  name                 = "palomgmt"
+resource "azurerm_subnet" "mgmt" {
+  name                 = "mgmt"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.hubmgmtsubrange
+  address_prefixes     = var.hubvnet["mgmtsubrange"]
 }
 
-resource "azurerm_subnet_network_security_group_association" "palomgmt" {
-  subnet_id                 = azurerm_subnet.palomgmt.id
-  network_security_group_id = azurerm_network_security_group.palomgmt.id
+resource "azurerm_subnet_network_security_group_association" "mgmt" {
+  subnet_id                 = azurerm_subnet.mgmt.id
+  network_security_group_id = azurerm_network_security_group.mgmt.id
 }
 
 resource "azurerm_subnet" "untrust" {
   name                 = "untrust"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.hubuntrustsubrange
+  address_prefixes     = var.hubvnet["untrustsubrange"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "untrust" {
@@ -90,7 +90,7 @@ resource "azurerm_subnet" "trust" {
   name                 = "trust"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.hubtrustsubrange
+  address_prefixes     = var.hubvnet["trustsubrange"]
 }
 
 resource "azurerm_subnet_network_security_group_association" "trust" {
@@ -102,19 +102,19 @@ resource "azurerm_subnet" "gateway" {
   name                 = "GatewaySubnet"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.hubgatewayrange
+  address_prefixes     = var.hubvnet["gatewayrange"]
 }
 
 resource "azurerm_subnet" "routeserver" {
   name                 = "RouteServerSubnet"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.routeserverrange
+  address_prefixes     = var.hubvnet["routeserverrange"]
 }
 
 resource "azurerm_subnet" "bastion" {
   name                 = "AzureBastionSubnet"
   resource_group_name  = var.rgname
   virtual_network_name = azurerm_virtual_network.transithub.name
-  address_prefixes     = var.bastionrange
+  address_prefixes     = var.hubvnet["bastionrange"]
 }
