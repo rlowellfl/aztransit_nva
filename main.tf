@@ -108,7 +108,7 @@ module "nva" {
   location          = azurerm_resource_group.network.location
   environment       = var.environment
   availabilitysetid = azurerm_availability_set.nva.id
-  count             = var.nvavalues["deploycount"]
+  count             = var.nvavalues.deploycount
   countindex        = count.index
   nvavalues         = var.nvavalues
   hubnetworkid      = module.hub-network.hubnetworkid

@@ -94,7 +94,7 @@ resource "azurerm_virtual_machine" "nva" {
   name                = "nva-${var.environment}-${var.location}-transit-obew-${var.countindex}"
   location            = var.location
   resource_group_name = var.rgname
-  vm_size             = var.nvavalues["vmsize"]
+  vm_size             = var.nvavalues.vmsize
   availability_set_id = var.availabilitysetid
 
   delete_os_disk_on_termination    = true
@@ -106,16 +106,16 @@ resource "azurerm_virtual_machine" "nva" {
   }
 
   plan {
-    name      = var.nvavalues["sku"]
-    publisher = var.nvavalues["publisher"]
-    product   = var.nvavalues["offer"]
+    name      = var.nvavalues.sku
+    publisher = var.nvavalues.publisher
+    product   = var.nvavalues.offer
   }
 
   storage_image_reference {
-    publisher = var.nvavalues["publisher"]
-    offer     = var.nvavalues["offer"]
-    sku       = var.nvavalues["sku"]
-    version   = var.nvavalues["version"]
+    publisher = var.nvavalues.publisher
+    offer     = var.nvavalues.offer
+    sku       = var.nvavalues.sku
+    version   = var.nvavalues.version
   }
 
   storage_os_disk {
@@ -128,8 +128,8 @@ resource "azurerm_virtual_machine" "nva" {
 
   os_profile {
     computer_name  = "nva-${var.environment}-${var.location}-transit-obew-${var.countindex}"
-    admin_username = var.nvavalues["nvauser"]
-    admin_password = var.nvavalues["nvapass"]
+    admin_username = var.nvavalues.nvauser
+    admin_password = var.nvavalues.nvapass
   }
 
   primary_network_interface_id = azurerm_network_interface.vnic0.id

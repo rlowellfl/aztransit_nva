@@ -65,8 +65,8 @@ spoke_network = {
 
   app2 = {
     spokeVnetName  = "app2"
-    spokeVnetRange = ["10.0.3.0/24"]
+    spokeVnetRange = ["10.0.4.0/24"]
     spokeSubName   = "subnet1"
-    spokeSubRange  = ["10.0.3.0/24"]
+    spokeSubRange  = ["10.0.4.0/24"]
   }
 }
