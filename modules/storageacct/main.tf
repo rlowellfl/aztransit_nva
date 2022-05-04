@@ -7,8 +7,6 @@ resource "azurerm_storage_account" "bootdiags" {
   account_replication_type  = "LRS"
   min_tls_version           = "TLS1_2"
   enable_https_traffic_only = true
-  allow_blob_public_access = false
-  bypass                    = ["AzureServices"]
   network_rules {
     default_action = "Deny"
   }

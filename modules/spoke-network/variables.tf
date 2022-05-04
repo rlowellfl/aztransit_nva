@@ -26,10 +26,8 @@ variable "spokeSubRange" {
   type = list(string)
 }
 
-variable "hubNetworkName" {
-}
-
-variable "hubNetworkID" {
+variable "hubvnet" {
+  type = map(any)
 }
 
 variable "intlbip" {

@@ -21,10 +21,10 @@ resource "azurerm_subnet" "subnet" {
 
 #Peer the spoke Vnet to the Hub Vnet
 resource "azurerm_virtual_network_peering" "spoketohub" {
-  name                         = "${var.spokeVnetName}_to_${var.hubNetworkName}"
+  name                         = "${var.spokeVnetName}_to_${var.hubvnet.name}"
   resource_group_name          = var.rgname
   virtual_network_name         = azurerm_virtual_network.spoke.name
-  remote_virtual_network_id    = var.hubNetworkID
+  remote_virtual_network_id    = var.hubvnet.id
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true
   use_remote_gateways          = false
@@ -32,9 +32,9 @@ resource "azurerm_virtual_network_peering" "spoketohub" {
 
 #Peer the hub Vnet to the Spoke Vnet
 resource "azurerm_virtual_network_peering" "spokefromhub" {
-  name                         = "${var.spokeVnetName}_from_${var.hubNetworkName}"
+  name                         = "${var.spokeVnetName}_from_${var.hubvnet.name}"
   resource_group_name          = var.rgname
-  virtual_network_name         = var.hubNetworkName
+  virtual_network_name         = var.hubvnet.name
   remote_virtual_network_id    = azurerm_virtual_network.spoke.id
   allow_virtual_network_access = true
   allow_forwarded_traffic      = true

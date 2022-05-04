@@ -41,7 +41,7 @@ resource "azurerm_network_interface" "vnic0" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-mgmt"
-    subnet_id                     = var.mgmtsubid
+    subnet_id                     = var.hubvnet.mgmtsubid
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.mgmtpip.id
   }
@@ -60,7 +60,7 @@ resource "azurerm_network_interface" "vnic1" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-untrust"
-    subnet_id                     = var.untrustsubid
+    subnet_id                     = var.hubvnet.untrustsubid
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.untrustpip.id
   }
@@ -79,7 +79,7 @@ resource "azurerm_network_interface" "vnic2" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-trust"
-    subnet_id                     = var.trustsubid
+    subnet_id                     = var.hubvnet.trustsubid
     private_ip_address_allocation = "Dynamic"
   }
   lifecycle {
@@ -153,7 +153,7 @@ resource "azurerm_virtual_machine" "nva" {
 resource "azurerm_lb_backend_address_pool_address" "obewilb" {
   name                    = "${azurerm_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.intbackendpoolid
-  virtual_network_id      = var.hubnetworkid
+  virtual_network_id      = var.hubvnet.id
   ip_address              = azurerm_network_interface.vnic2.private_ip_address
 }
 
@@ -161,6 +161,6 @@ resource "azurerm_lb_backend_address_pool_address" "obewilb" {
 resource "azurerm_lb_backend_address_pool_address" "extlb" {
   name                    = "${azurerm_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.extbackendpoolid
-  virtual_network_id      = var.hubnetworkid
+  virtual_network_id      = var.hubvnet.id
   ip_address              = azurerm_network_interface.vnic1.private_ip_address
 }

@@ -18,24 +18,6 @@ variable "intlbip" {
   type = string
 }
 
-variable "mgmtsubiprange" {
-  type = string
-}
-
-variable "untrustsubiprange" {
-  type = string
-}
-
-variable "trustsubiprange" {
-  type = string
-}
-
-variable "mgmtsubid" {
-  type = string
-}
-variable "untrustsubid" {
-  type = string
-}
-variable "trustsubid" {
-  type = string
+variable "hubvnet" {
+  type = map(any)
 }

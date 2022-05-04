@@ -75,22 +75,20 @@ resource "azurerm_availability_set" "nva" {
 
 # Create the internal OBEW load balancer
 module "obew-lb" {
-  source       = "./modules/obew-lb"
-  rgname       = azurerm_resource_group.network.name
-  location     = azurerm_resource_group.network.location
-  environment  = var.environment
-  trustsubid   = module.hub-network.trustsubid
-  hubnetworkid = module.hub-network.hubnetworkid
+  source      = "./modules/obew-lb"
+  rgname      = azurerm_resource_group.network.name
+  location    = azurerm_resource_group.network.location
+  environment = var.environment
+  hubvnet     = module.hub-network.hubvnetvalues
 }
 
 # Create the external load balancer
 module "ext-lb" {
-  source       = "./modules/ext-lb"
-  rgname       = azurerm_resource_group.network.name
-  location     = azurerm_resource_group.network.location
-  environment  = var.environment
-  untrustsubid = module.hub-network.untrustsubid
-  hubnetworkid = module.hub-network.hubnetworkid
+  source      = "./modules/ext-lb"
+  rgname      = azurerm_resource_group.network.name
+  location    = azurerm_resource_group.network.location
+  environment = var.environment
+  hubvnet     = module.hub-network.hubvnetvalues
 }
 
 # Create the boot diagnostics storage account
@@ -111,10 +109,7 @@ module "nva" {
   count             = var.nvavalues.deploycount
   countindex        = count.index
   nvavalues         = var.nvavalues
-  hubnetworkid      = module.hub-network.hubnetworkid
-  mgmtsubid         = module.hub-network.mgmtsubid
-  untrustsubid      = module.hub-network.untrustsubid
-  trustsubid        = module.hub-network.trustsubid
+  hubvnet           = module.hub-network.hubvnetvalues
   intbackendpoolid  = module.obew-lb.backendpoolid
   extbackendpoolid  = module.ext-lb.backendpoolid
   bootdiagsname     = module.bootdiags.primary_blob_endpoint
@@ -122,18 +117,13 @@ module "nva" {
 
 # Create and associate route tables for the transit hub subnets
 module "transit-routes" {
-  source            = "./modules/transit-routes"
-  rgname            = azurerm_resource_group.network.name
-  location          = azurerm_resource_group.network.location
-  environment       = var.environment
-  extlbip           = module.ext-lb.privateip
-  intlbip           = module.obew-lb.privateip
-  mgmtsubiprange    = module.hub-network.mgmtsubiprange
-  untrustsubiprange = module.hub-network.untrustsubiprange
-  trustsubiprange   = module.hub-network.trustsubiprange
-  mgmtsubid         = module.hub-network.mgmtsubid
-  untrustsubid      = module.hub-network.untrustsubid
-  trustsubid        = module.hub-network.trustsubid
+  source      = "./modules/transit-routes"
+  rgname      = azurerm_resource_group.network.name
+  location    = azurerm_resource_group.network.location
+  environment = var.environment
+  extlbip     = module.ext-lb.privateip
+  intlbip     = module.obew-lb.privateip
+  hubvnet     = module.hub-network.hubvnetvalues
 }
 
 # Deploy one or more spoke virtual networks
@@ -143,8 +133,7 @@ module "spoke-network" {
   location       = var.location
   environment    = var.environment
   rgname         = azurerm_resource_group.network.name
-  hubNetworkName = module.hub-network.hubvnetname
-  hubNetworkID   = module.hub-network.hubvnetid
+  hubvnet        = module.hub-network.hubvnetvalues
   intlbip        = module.obew-lb.privateip
   spokeVnetName  = each.value["spokeVnetName"]
   spokeVnetRange = each.value["spokeVnetRange"]

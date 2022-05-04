@@ -22,20 +22,8 @@ variable "nvavalues" {
   type = map(any)
 }
 
-variable "mgmtsubid" {
-  type = string
-}
-
-variable "untrustsubid" {
-  type = string
-}
-
-variable "trustsubid" {
-  type = string
-}
-
-variable "hubnetworkid" {
-  type = string
+variable "hubvnet" {
+  type = map(any)
 }
 
 variable "intbackendpoolid" {

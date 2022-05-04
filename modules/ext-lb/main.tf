@@ -8,7 +8,7 @@ resource "azurerm_lb" "extlb" {
 
   frontend_ip_configuration {
     name                          = "VIP"
-    subnet_id                     = var.untrustsubid
+    subnet_id                     = var.hubvnet.untrustsubid
     private_ip_address_allocation = "Dynamic"
   }
 

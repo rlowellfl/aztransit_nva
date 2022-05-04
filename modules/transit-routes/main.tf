@@ -8,12 +8,12 @@ resource "azurerm_route_table" "mgmt" {
 
   route {
     name           = "udr-untrust-blackhole"
-    address_prefix = var.untrustsubiprange
+    address_prefix = var.hubvnet.untrustsubiprange
     next_hop_type  = "None"
   }
   route {
     name                   = "udr-transit-${var.environment}"
-    address_prefix         = var.mgmtsubiprange
+    address_prefix         = var.hubvnet.mgmtsubiprange
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.intlbip
   }
@@ -32,12 +32,12 @@ resource "azurerm_route_table" "untrust" {
 
   route {
     name           = "udr-mgmt-blackhole"
-    address_prefix = var.mgmtsubiprange
+    address_prefix = var.hubvnet.mgmtsubiprange
     next_hop_type  = "None"
   }
   route {
     name           = "udr-trust-blackhole"
-    address_prefix = var.trustsubiprange
+    address_prefix = var.hubvnet.trustsubiprange
     next_hop_type  = "None"
   }
   lifecycle {
@@ -55,7 +55,7 @@ resource "azurerm_route_table" "trust" {
 
   route {
     name           = "udr-untrust-blackhole"
-    address_prefix = var.untrustsubiprange
+    address_prefix = var.hubvnet.untrustsubiprange
     next_hop_type  = "None"
   }
   route {
@@ -73,14 +73,14 @@ resource "azurerm_route_table" "trust" {
 
 #Transit VNET Route-Tables -> Subnet Associations
 resource "azurerm_subnet_route_table_association" "mgmt" {
-  subnet_id      = var.mgmtsubid
+  subnet_id      = var.hubvnet.mgmtsubid
   route_table_id = azurerm_route_table.mgmt.id
 }
 resource "azurerm_subnet_route_table_association" "untrust" {
-  subnet_id      = var.untrustsubid
+  subnet_id      = var.hubvnet.untrustsubid
   route_table_id = azurerm_route_table.untrust.id
 }
 resource "azurerm_subnet_route_table_association" "trust" {
-  subnet_id      = var.trustsubid
+  subnet_id      = var.hubvnet.trustsubid
   route_table_id = azurerm_route_table.trust.id
 }

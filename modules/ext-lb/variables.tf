@@ -10,10 +10,6 @@ variable "environment" {
   type = string
 }
 
-variable "untrustsubid" {
-  type = string
-}
-
-variable "hubnetworkid" {
-  type = string
+variable "hubvnet" {
+  type = map(any)
 }

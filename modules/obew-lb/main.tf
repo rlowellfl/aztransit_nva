@@ -8,7 +8,7 @@ resource "azurerm_lb" "obewilb" {
 
   frontend_ip_configuration {
     name                          = "Internal_VIP"
-    subnet_id                     = var.trustsubid
+    subnet_id                     = var.hubvnet.trustsubid
     private_ip_address_allocation = "Dynamic"
   }
 
