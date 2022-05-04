@@ -1,6 +1,5 @@
 /*
-LOGIN AZURE SUBSCRIPTION
-az login
+
 BEFORE DEPLOYING FWs
 Using the AzCLI, accept the offer terms prior to deployment. This only
 need to be done once per subscription
@@ -95,17 +94,11 @@ module "ext-lb" {
 }
 
 # Create the boot diagnostics storage account
-resource "azurerm_storage_account" "bootdiags" {
-  name                     = var.bootdiagsname
-  resource_group_name      = azurerm_resource_group.network.name
-  location                 = azurerm_resource_group.network.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  lifecycle {
-    ignore_changes = [
-      tags,
-    ]
-  }
+module "bootdiags" {
+  source        = "./modules/storageacct"
+  bootdiagsname = var.bootdiagsname
+  location      = azurerm_resource_group.network.location
+  rgname        = azurerm_resource_group.network.name
 }
 
 # Deploy one or more Network Virtual Appliances
@@ -124,7 +117,7 @@ module "nva" {
   trustsubid        = module.hub-network.trustsubid
   intbackendpoolid  = module.obew-lb.backendpoolid
   extbackendpoolid  = module.ext-lb.backendpoolid
-  bootdiagsname     = azurerm_storage_account.bootdiags.primary_blob_endpoint
+  bootdiagsname     = module.bootdiags.primary_blob_endpoint
 }
 
 # Create and associate route tables for the transit hub subnets

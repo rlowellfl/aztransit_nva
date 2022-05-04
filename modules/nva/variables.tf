@@ -19,7 +19,7 @@ variable "countindex" {
 }
 
 variable "nvavalues" {
-  type        = map
+  type = map(any)
 }
 
 variable "mgmtsubid" {

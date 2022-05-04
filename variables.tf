@@ -30,7 +30,7 @@ variable "bootdiagsname" {
 
 variable "nvavalues" {
   description = "Values for the marketplace Network Virtual Appliance image"
-  type        = map
+  type        = map(any)
 }
 
 # Spoke network variables

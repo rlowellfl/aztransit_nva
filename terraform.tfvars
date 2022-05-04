@@ -35,7 +35,7 @@ hubvnet = {
 }
 
 # NVA variables
-bootdiagsname   = "rlsamplebootdiagsname"
+bootdiagsname = "rlsamplebootdiagsname"
 nvavalues = {
   deploycount = "2"
   vmsize      = "Standard_DS2v4"
