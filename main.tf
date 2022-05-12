@@ -125,18 +125,3 @@ module "transit-routes" {
   intlbip     = module.obew-lb.privateip
   hubvnet     = module.hub-network.hubvnetvalues
 }
-
-# Deploy one or more spoke virtual networks
-module "spoke-network" {
-  for_each       = var.spoke_network
-  source         = "./modules/spoke-network"
-  location       = var.location
-  environment    = var.environment
-  rgname         = azurerm_resource_group.network.name
-  hubvnet        = module.hub-network.hubvnetvalues
-  intlbip        = module.obew-lb.privateip
-  spokeVnetName  = each.value["spokeVnetName"]
-  spokeVnetRange = each.value["spokeVnetRange"]
-  spokeSubName   = each.value["spokeSubName"]
-  spokeSubRange  = each.value["spokeSubRange"]
-}

@@ -30,6 +30,7 @@ hubvnet = {
   trustsubrange    = ["10.0.0.64/27"]
   gatewayrange     = ["10.0.0.96/27"]
   routeserverrange = ["10.0.0.128/27"]
+  AppGwsubrange    = ["10.0.0.160/27"]
   bastionrange     = ["10.0.1.0/26"]
   allowedips       = ["11.22.33.44"]
 }
@@ -45,6 +46,8 @@ nvavalues = {
   version     = "10.1.3"
   nvauser     = "nvausername"
   nvapass     = "<network virtual appliance password>"
+  bootstrapacct = ""
+  bootstrapshare = ""
 }
 
 # Spoke network variables
