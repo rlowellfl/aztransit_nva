@@ -10,10 +10,36 @@ pool:
   vmImage: ubuntu-latest
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+- task: TerraformInstaller@0
+  inputs:
+    terraformVersion: 'latest'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    backendServiceArm: 'Microsoft Partner Network(f157d68d-6c7b-497d-882c-7173549d4add)'
+    backendAzureRmResourceGroupName: 'Non-TF'
+    backendAzureRmStorageAccountName: 'architechstfstatefiles'
+    backendAzureRmContainerName: 'aztransittfstate'
+    backendAzureRmKey: 'terraform.tfstate'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    environmentServiceNameAzureRM: 'Microsoft Partner Network(f157d68d-6c7b-497d-882c-7173549d4add)'
+
+- task: TerraformTaskV2@2
+  inputs:
+    provider: 'azurerm'
+    command: 'apply'
+    environmentServiceNameAzureRM: 'Microsoft Partner Network(f157d68d-6c7b-497d-882c-7173549d4add)'
+
+
