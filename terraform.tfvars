@@ -38,38 +38,14 @@ hubvnet = {
 # NVA variables
 bootdiagsname = "rlsamplebootdiagsname"
 nvavalues = {
-  deploycount = "2"
-  vmsize      = "Standard_DS2v4"
-  publisher   = "paloaltonetworks"
-  offer       = "vmseries-flex"
-  sku         = "byol"
-  version     = "10.1.3"
-  nvauser     = "nvausername"
-  nvapass     = "<network virtual appliance password>"
-  bootstrapacct = ""
+  deploycount    = "2"
+  vmsize         = "Standard_DS2v4"
+  publisher      = "paloaltonetworks"
+  offer          = "vmseries-flex"
+  sku            = "byol"
+  version        = "10.1.3"
+  nvauser        = "nvausername"
+  nvapass        = "<network virtual appliance password>"
+  bootstrapacct  = ""
   bootstrapshare = ""
-}
-
-# Spoke network variables
-spoke_network = {
-  sharedsvcs = {
-    spokeVnetName  = "sharedsvcs"
-    spokeVnetRange = ["10.0.2.0/24"]
-    spokeSubName   = "subnet1"
-    spokeSubRange  = ["10.0.2.0/24"]
-  }
-
-  app1 = {
-    spokeVnetName  = "app1"
-    spokeVnetRange = ["10.0.3.0/24"]
-    spokeSubName   = "subnet1"
-    spokeSubRange  = ["10.0.3.0/24"]
-  }
-
-  app2 = {
-    spokeVnetName  = "app2"
-    spokeVnetRange = ["10.0.4.0/24"]
-    spokeSubName   = "subnet1"
-    spokeSubRange  = ["10.0.4.0/24"]
-  }
 }

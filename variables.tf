@@ -32,14 +32,3 @@ variable "nvavalues" {
   description = "Values for the marketplace Network Virtual Appliance image"
   type        = map(any)
 }
-
-# Spoke network variables
-variable "spoke_network" {
-  description = "Defines spoke networks that branch from the main transit hub."
-  type = map(object({
-    spokeVnetName  = string
-    spokeVnetRange = list(string)
-    spokeSubName   = string
-    spokeSubRange  = list(string)
-  }))
-}
