@@ -1,6 +1,6 @@
 # Environmental variables
-environment = "prod"
-location    = "eastus2"
+environment = "temporary"
+location    = "westus"
 
 # Tag names and values
 required_tags = {
@@ -39,13 +39,13 @@ hubvnet = {
 bootdiagsname = "rlsamplebootdiagsname"
 nvavalues = {
   deploycount    = "2"
-  vmsize         = "Standard_DS2v4"
+  vmsize         = "Standard_DS3_v2"
   publisher      = "paloaltonetworks"
   offer          = "vmseries-flex"
   sku            = "byol"
   version        = "10.1.3"
   nvauser        = "nvausername"
-  nvapass        = "<network virtual appliance password>"
+  nvapass        = "uT%m04r6uP&z"
   bootstrapacct  = ""
   bootstrapshare = ""
 }

@@ -2,7 +2,7 @@ resource "azurerm_storage_account" "bootdiags" {
   name                      = var.bootdiagsname
   location                  = var.location
   resource_group_name       = var.rgname
-  account_kind              = "BlobStorage"
+  account_kind              = "StorageV2"
   account_tier              = "Standard"
   account_replication_type  = "LRS"
   min_tls_version           = "TLS1_2"

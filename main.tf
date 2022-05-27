@@ -45,7 +45,7 @@ provider "azurerm" {
 
 # Create Resource Group
 resource "azurerm_resource_group" "network" {
-  name     = "rg-${var.environment}-${var.environment}-transit"
+  name     = "rg-${var.environment}-${var.location}-transit"
   location = var.location
   tags     = var.required_tags
 }
