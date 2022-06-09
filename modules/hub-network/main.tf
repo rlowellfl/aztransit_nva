@@ -5,7 +5,7 @@ resource "azurerm_network_security_group" "mgmt" {
   resource_group_name = var.rgname
 
   security_rule {
-    name                       = "HTTPS"
+    name                       = "Allow_HTTPS"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -17,7 +17,7 @@ resource "azurerm_network_security_group" "mgmt" {
   }
 
   security_rule {
-    name                       = "SSH"
+    name                       = "Allow_SSH"
     priority                   = 110
     direction                  = "Inbound"
     access                     = "Allow"
@@ -36,8 +36,19 @@ resource "azurerm_network_security_group" "mgmt" {
 }
 
 # Create the NVA Trust and Untrust subnet Network Security Group
-resource "azurerm_network_security_group" "default" {
-  name                = "nsg-${var.environment}-${var.location}-transit-default"
+resource "azurerm_network_security_group" "trust" {
+  name                = "nsg-${var.environment}-${var.location}-transit-trust"
+  location            = var.location
+  resource_group_name = var.rgname
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
+}
+
+resource "azurerm_network_security_group" "untrust" {
+  name                = "nsg-${var.environment}-${var.location}-transit-untrust"
   location            = var.location
   resource_group_name = var.rgname
   lifecycle {
@@ -83,7 +94,7 @@ resource "azurerm_subnet" "untrust" {
 
 resource "azurerm_subnet_network_security_group_association" "untrust" {
   subnet_id                 = azurerm_subnet.untrust.id
-  network_security_group_id = azurerm_network_security_group.default.id
+  network_security_group_id = azurerm_network_security_group.untrust.id
 }
 
 resource "azurerm_subnet" "trust" {
@@ -95,7 +106,7 @@ resource "azurerm_subnet" "trust" {
 
 resource "azurerm_subnet_network_security_group_association" "trust" {
   subnet_id                 = azurerm_subnet.trust.id
-  network_security_group_id = azurerm_network_security_group.default.id
+  network_security_group_id = azurerm_network_security_group.trust.id
 }
 
 resource "azurerm_subnet" "gateway" {

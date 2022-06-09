@@ -38,7 +38,7 @@ hubvnet = {
 # NVA variables
 bootdiagsname = "rlsamplebootdiagsname"
 nvavalues = {
-  deploycount    = "2"
+  deploycount    = "1"
   vmsize         = "Standard_DS3_v2"
   publisher      = "paloaltonetworks"
   offer          = "vmseries-flex"

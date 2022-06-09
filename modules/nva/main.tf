@@ -35,7 +35,7 @@ resource "azurerm_public_ip" "untrustpip" {
 
 # Create VNICs
 resource "azurerm_network_interface" "vnic0" {
-  name                = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic0-test"
+  name                = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic0"
   location            = var.location
   resource_group_name = var.rgname
 
@@ -53,7 +53,7 @@ resource "azurerm_network_interface" "vnic0" {
 }
 
 resource "azurerm_network_interface" "vnic1" {
-  name                 = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic1-test"
+  name                 = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic1"
   location             = var.location
   resource_group_name  = var.rgname
   enable_ip_forwarding = true
@@ -72,7 +72,7 @@ resource "azurerm_network_interface" "vnic1" {
 }
 
 resource "azurerm_network_interface" "vnic2" {
-  name                 = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic2test"
+  name                 = "nic-nva-${var.environment}-${var.location}-transit-obew-${var.countindex}-vnic2"
   location             = var.location
   resource_group_name  = var.rgname
   enable_ip_forwarding = true
