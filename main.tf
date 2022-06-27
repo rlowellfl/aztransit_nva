@@ -20,13 +20,12 @@ terraform {
       version = "1.2.10"
     }
   }
-  /*  backend "azurerm" {
-    resource_group_name  = "<rg for terraform state backend storage>"
-    storage_account_name = "<storage account for terraform state backend storage>"
-    container_name       = "transittfstate"
+  backend "azurerm" {
+    resource_group_name  = "<resource group for terraform state file storage>"
+    storage_account_name = "<storage account for terraform state file storage>"
+    container_name       = "<hub network state file container>"
     key                  = "<storage account key>"
   }
-*/
 }
 
 /*
@@ -45,6 +44,7 @@ data "terraform_remote_state" "panorama" {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
+  storage_use_azuread = true
 }
 
 # Create Resource Group

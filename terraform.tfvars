@@ -1,6 +1,6 @@
 # Environmental variables
 environment = "temporary"
-location    = "westus"
+location    = "eastus2"
 
 # Tag names and values
 required_tags = {
@@ -38,7 +38,7 @@ hubvnet = {
 # NVA variables
 bootdiagsname = "rlsamplebootdiagsname"
 nvavalues = {
-  deploycount    = "1"
+  deploycount    = "0"
   vmsize         = "Standard_DS3_v2"
   publisher      = "paloaltonetworks"
   offer          = "vmseries-flex"
