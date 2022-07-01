@@ -20,12 +20,12 @@ terraform {
       version = "1.2.10"
     }
   }
-  backend "azurerm" {
-    resource_group_name  = "<resource group for terraform state file storage>"
-    storage_account_name = "<storage account for terraform state file storage>"
-    container_name       = "<hub network state file container>"
-    key                  = "<storage account key>"
-  }
+  # backend "azurerm" {
+  #   resource_group_name  = "<resource group for terraform state file storage>"
+  #   storage_account_name = "<storage account for terraform state file storage>"
+  #   container_name       = "<hub network state file container>"
+  #   key                  = "<storage account key>"
+  # }
 }
 
 /*
