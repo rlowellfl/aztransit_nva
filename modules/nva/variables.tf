@@ -22,10 +22,6 @@ variable "nvavalues" {
   type = map(any)
 }
 
-variable "hubvnet" {
-  type = map(any)
-}
-
 variable "intbackendpoolid" {
   type = string
 }

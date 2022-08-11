@@ -8,7 +8,7 @@ resource "azurerm_lb" "obewilb" {
 
   frontend_ip_configuration {
     name                          = "Internal_VIP"
-    subnet_id                     = var.hubvnet.trustsubid
+    subnet_id                     = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit/subnets/trust"
     private_ip_address_allocation = "Dynamic"
   }
 

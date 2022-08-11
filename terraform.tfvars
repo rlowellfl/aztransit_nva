@@ -1,24 +1,9 @@
 # Environmental variables
-environment = "temporary"
-location    = "eastus2"
+environment = "prod"
+location    = "azureregion"
 
 # Tag names and values
 required_tags = {
-  WorkloadName       = "Transit Hub"
-  DataClassification = "Sensitive"
-  Criticality        = "Business-Critical"
-  BusinessUnit       = "Information Technology"
-  OpsTeam            = "Network Team"
-  ApplicationName    = "Transit Hub"
-  Approver           = "some@guy.com"
-  BudgetAmount       = "1234"
-  CostCenter         = "99999"
-  DR                 = "Mission-Critical"
-  Env                = "Production"
-  EndDate            = "2025-12-31"
-  Owner              = "some@gal.com"
-  Requester          = "someother@dude.com"
-  TicketNumber       = "54321"
 }
 
 # Hub VNet variables
@@ -36,14 +21,14 @@ hubvnet = {
 }
 
 # NVA variables
-bootdiagsname = "rlsamplebootdiagsname"
+bootdiagsname = "examplepalobootdiag"
 nvavalues = {
-  deploycount    = "0"
+  deploycount    = "2"
   vmsize         = "Standard_DS3_v2"
   publisher      = "paloaltonetworks"
   offer          = "vmseries-flex"
   sku            = "byol"
-  version        = "10.1.3"
+  version        = "10.2.2"
   nvauser        = "nvausername"
   nvapass        = "uT%m04r6uP&z"
   bootstrapacct  = ""

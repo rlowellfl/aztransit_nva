@@ -17,7 +17,3 @@ variable "extlbip" {
 variable "intlbip" {
   type = string
 }
-
-variable "hubvnet" {
-  type = map(any)
-}

@@ -9,7 +9,3 @@ variable "location" {
 variable "environment" {
   type = string
 }
-
-variable "hubvnet" {
-  type = map(any)
-}

@@ -1,13 +1,3 @@
-/*
-
-BEFORE DEPLOYING FWs
-Using the AzCLI, accept the offer terms prior to deployment. This only
-need to be done once per subscription
-```
-az vm image terms accept --urn paloaltonetworks:vmseries-flex:byol:latest
-```
-*/
-
 # Configure Terraform
 terraform {
   required_providers {
@@ -15,52 +5,19 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~>3.11.0"
     }
-    azurecaf = {
-      source  = "aztfmod/azurecaf"
-      version = "1.2.10"
-    }
-  }
-  backend "azurerm" {
-    resource_group_name  = "<resource group for terraform state file storage>"
-    storage_account_name = "<storage account for terraform state file storage>"
-    container_name       = "terraform-aztransit-nva"
-    key                  = "<storage account key>"
   }
 }
-
-/*
-# Pull data from the Panorama deployment tfstate file
-data "terraform_remote_state" "panorama" {
-  backend = "azurerm"
-  config = {
-    resource_group_name  = "<rg for panorama terraform state backend storage>"
-    storage_account_name = "<storage account for terraform state backend storage>"
-    container_name       = "terraform-azpanorama"
-    key                  = "<storage account key>"
-  }
-}
-*/
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   features {}
-  storage_use_azuread = true
 }
 
 # Create Resource Group
 resource "azurerm_resource_group" "network" {
-  name     = "rg-${var.environment}-${var.location}-transit"
+  name     = "rg-${var.environment}-${var.location}-palonva"
   location = var.location
   tags     = var.required_tags
-}
-
-# Deploy the transit hub virtual network
-module "hub-network" {
-  source      = "./modules/hub-network"
-  rgname      = azurerm_resource_group.network.name
-  location    = azurerm_resource_group.network.location
-  environment = var.environment
-  hubvnet     = var.hubvnet
 }
 
 #Create an Availavility Set for the NVAs
@@ -83,7 +40,6 @@ module "obew-lb" {
   rgname      = azurerm_resource_group.network.name
   location    = azurerm_resource_group.network.location
   environment = var.environment
-  hubvnet     = module.hub-network.hubvnetvalues
 }
 
 # Create the external load balancer
@@ -92,7 +48,6 @@ module "ext-lb" {
   rgname      = azurerm_resource_group.network.name
   location    = azurerm_resource_group.network.location
   environment = var.environment
-  hubvnet     = module.hub-network.hubvnetvalues
 }
 
 # Create the boot diagnostics storage account
@@ -113,7 +68,6 @@ module "nva" {
   count             = var.nvavalues.deploycount
   countindex        = count.index
   nvavalues         = var.nvavalues
-  hubvnet           = module.hub-network.hubvnetvalues
   intbackendpoolid  = module.obew-lb.backendpoolid
   extbackendpoolid  = module.ext-lb.backendpoolid
   bootdiagsname     = module.bootdiags.primary_blob_endpoint
@@ -127,5 +81,4 @@ module "transit-routes" {
   environment = var.environment
   extlbip     = module.ext-lb.privateip
   intlbip     = module.obew-lb.privateip
-  hubvnet     = module.hub-network.hubvnetvalues
 }

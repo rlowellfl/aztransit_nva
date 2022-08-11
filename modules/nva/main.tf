@@ -41,7 +41,7 @@ resource "azurerm_network_interface" "vnic0" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-mgmt"
-    subnet_id                     = var.hubvnet.mgmtsubid
+    subnet_id                     = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit/subnets/mgmt"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.mgmtpip.id
   }
@@ -60,7 +60,7 @@ resource "azurerm_network_interface" "vnic1" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-untrust"
-    subnet_id                     = var.hubvnet.untrustsubid
+    subnet_id                     = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit/subnets/untrust"
     private_ip_address_allocation = "Dynamic"
     public_ip_address_id          = azurerm_public_ip.untrustpip.id
   }
@@ -79,7 +79,7 @@ resource "azurerm_network_interface" "vnic2" {
 
   ip_configuration {
     name                          = "fw${var.countindex}-trust"
-    subnet_id                     = var.hubvnet.trustsubid
+    subnet_id                     = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit/subnets/trust"
     private_ip_address_allocation = "Dynamic"
   }
   lifecycle {
@@ -141,7 +141,7 @@ resource "azurerm_linux_virtual_machine" "nva" {
 resource "azurerm_lb_backend_address_pool_address" "obewilb" {
   name                    = "${azurerm_linux_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.intbackendpoolid
-  virtual_network_id      = var.hubvnet.id
+  virtual_network_id      = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit"
   ip_address              = azurerm_network_interface.vnic2.private_ip_address
 }
 
@@ -149,6 +149,6 @@ resource "azurerm_lb_backend_address_pool_address" "obewilb" {
 resource "azurerm_lb_backend_address_pool_address" "extlb" {
   name                    = "${azurerm_linux_virtual_machine.nva.name}-trust"
   backend_address_pool_id = var.extbackendpoolid
-  virtual_network_id      = var.hubvnet.id
+  virtual_network_id      = "/subscriptions/3ac26373-cca2-40e5-9177-ce25e413a77c/resourceGroups/rg-prod-northcentral-transitnet/providers/Microsoft.Network/virtualNetworks/vnet-prod-northcentral-transit"
   ip_address              = azurerm_network_interface.vnic1.private_ip_address
 }
