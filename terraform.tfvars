@@ -30,7 +30,7 @@ nvavalues = {
   sku            = "byol"
   version        = "10.2.2"
   nvauser        = "nvausername"
-  nvapass        = "uT%m04r6uP&z"
+  nvapass        = "yoursupersecurepasswordhere"
   bootstrapacct  = ""
   bootstrapshare = ""
 }
